@@ -530,16 +530,23 @@
       }
       function seededEntries() {
         return [
-          { id: uid(), title: "在安静里，重新听见自己", category: "life", date: "2026-10-02", content: "今天下班后没有立刻打开任何东西，只是沿着河边慢慢走。风把树叶翻到另一面，城市忽然有了很具体的呼吸。原来留白不是浪费，它让一些被忽略的感受重新浮上来。", tags: ["散步", "慢生活"], favorite: true, updatedAt: Date.now() - 3600000 },
-          { id: uid(), title: "读《悉达多》：河流知道答案", category: "reading", date: "2026-10-01", content: "读到河流的段落时想到，很多答案并不是被找到的，而是在一次次经过之后，慢慢变得清晰。阅读有时像借来另一双眼睛，看见自己生活里的水流。", tags: ["小说", "自我"], favorite: true, updatedAt: Date.now() - 86400000 },
-          { id: uid(), title: "《完美的日子》：重复里的光", category: "film", date: "2026-09-30", content: "主角每天早上买一罐咖啡、拍一张树影，日子几乎一模一样。可镜头里那些细小的变化，让重复看起来不像停滞，更像一种耐心的积攒。", tags: ["电影", "日常"], favorite: false, updatedAt: Date.now() - 2 * 86400000 },
-          { id: uid(), title: "把工作拆成可以呼吸的小块", category: "work", date: "2026-09-29", content: "下午的会议很多，真正有效的时间反而来自会后那段没有被打断的四十分钟。接下来想试着把大任务拆成更小的闭环，给专注留下完整的边界。", tags: ["工作方法", "专注"], favorite: false, updatedAt: Date.now() - 3 * 86400000 },
-          { id: uid(), title: "定投这件事，先想清楚再开始", category: "invest", date: "2026-09-27", content: "比起挑到最好的时点，能不能长期坚持反而更关键。打算先把每个月能稳定拿出来的部分固定下来，剩下的交给时间，而不是交给情绪。", tags: ["定投", "长期"], favorite: false, updatedAt: Date.now() - 5 * 86400000 },
-          { id: uid(), title: "展览结束以后，颜色还在", category: "art", date: "2026-09-24", content: "很久没有看完展之后还愿意在街上绕一圈。那组低饱和的蓝停留在脑子里，让普通的建筑边缘也多了一层柔软。", tags: ["绘画", "颜色", "展览"], favorite: false, updatedAt: Date.now() - 8 * 86400000 },
-          { id: uid(), title: "一首听了整个下午的钢琴曲", category: "art", date: "2026-09-21", content: "没有歌词，也没有明显的起伏，但就是可以一直放着。写东西的时候它不抢注意力，停下来的时候又能听见一点温度。", tags: ["音乐", "钢琴"], favorite: false, updatedAt: Date.now() - 11 * 86400000 },
-          { id: uid(), title: "关于「注意力」的一本书", category: "reading", date: "2026-09-18", content: "读到一半开始反省自己每天被打断的次数。作者说专注不是天赋，而是环境设计出来的结果，这句话让我想把手机挪到另一个房间试试。", tags: ["非虚构", "注意力"], favorite: false, updatedAt: Date.now() - 14 * 86400000 }
+          { id: uid(), seed: true, title: "在安静里，重新听见自己", category: "life", date: "2026-10-02", content: "今天下班后没有立刻打开任何东西，只是沿着河边慢慢走。风把树叶翻到另一面，城市忽然有了很具体的呼吸。原来留白不是浪费，它让一些被忽略的感受重新浮上来。", tags: ["散步", "慢生活"], favorite: true, updatedAt: Date.now() - 3600000 },
+          { id: uid(), seed: true, title: "读《悉达多》：河流知道答案", category: "reading", date: "2026-10-01", content: "读到河流的段落时想到，很多答案并不是被找到的，而是在一次次经过之后，慢慢变得清晰。阅读有时像借来另一双眼睛，看见自己生活里的水流。", tags: ["小说", "自我"], favorite: true, updatedAt: Date.now() - 86400000 },
+          { id: uid(), seed: true, title: "《完美的日子》：重复里的光", category: "film", date: "2026-09-30", content: "主角每天早上买一罐咖啡、拍一张树影，日子几乎一模一样。可镜头里那些细小的变化，让重复看起来不像停滞，更像一种耐心的积攒。", tags: ["电影", "日常"], favorite: false, updatedAt: Date.now() - 2 * 86400000 },
+          { id: uid(), seed: true, title: "把工作拆成可以呼吸的小块", category: "work", date: "2026-09-29", content: "下午的会议很多，真正有效的时间反而来自会后那段没有被打断的四十分钟。接下来想试着把大任务拆成更小的闭环，给专注留下完整的边界。", tags: ["工作方法", "专注"], favorite: false, updatedAt: Date.now() - 3 * 86400000 },
+          { id: uid(), seed: true, title: "定投这件事，先想清楚再开始", category: "invest", date: "2026-09-27", content: "比起挑到最好的时点，能不能长期坚持反而更关键。打算先把每个月能稳定拿出来的部分固定下来，剩下的交给时间，而不是交给情绪。", tags: ["定投", "长期"], favorite: false, updatedAt: Date.now() - 5 * 86400000 },
+          { id: uid(), seed: true, title: "展览结束以后，颜色还在", category: "art", date: "2026-09-24", content: "很久没有看完展之后还愿意在街上绕一圈。那组低饱和的蓝停留在脑子里，让普通的建筑边缘也多了一层柔软。", tags: ["绘画", "颜色", "展览"], favorite: false, updatedAt: Date.now() - 8 * 86400000 },
+          { id: uid(), seed: true, title: "一首听了整个下午的钢琴曲", category: "art", date: "2026-09-21", content: "没有歌词，也没有明显的起伏，但就是可以一直放着。写东西的时候它不抢注意力，停下来的时候又能听见一点温度。", tags: ["音乐", "钢琴"], favorite: false, updatedAt: Date.now() - 11 * 86400000 },
+          { id: uid(), seed: true, title: "关于「注意力」的一本书", category: "reading", date: "2026-09-18", content: "读到一半开始反省自己每天被打断的次数。作者说专注不是天赋，而是环境设计出来的结果，这句话让我想把手机挪到另一个房间试试。", tags: ["非虚构", "注意力"], favorite: false, updatedAt: Date.now() - 14 * 86400000 }
         ];
       }
+      /* 早先的版本把示例记录当成真实记录同步过，这里按内容把它们认出来并清掉（只影响与示例完全一致的那几条） */
+      var demoSignatures = (function () {
+        var set = {};
+        seededEntries().forEach(function (e) { set[e.title + "\u0001" + e.content] = true; });
+        return set;
+      }());
+      function isDemoEntry(entry) { return !!(entry && demoSignatures[String(entry.title || "") + "\u0001" + String(entry.content || "")]); }
       function openDatabase() {
         return new Promise(function (resolve, reject) {
           if (!window.indexedDB) { reject(new Error("indexeddb-unavailable")); return; }
@@ -590,17 +597,20 @@
             state.entries = stored;
           } else {
             var legacy = localStorage.getItem(STORAGE_KEY);
-            state.entries = legacy ? JSON.parse(legacy) : seededEntries();
+            state.entries = legacy ? JSON.parse(legacy) : initialEntries();
             await persistEntries();
           }
         } catch (e) {
           noteDb = null;
           try {
             var raw = localStorage.getItem(STORAGE_KEY);
-            state.entries = raw ? JSON.parse(raw) : seededEntries();
-          } catch (fallbackError) { state.entries = seededEntries(); }
+            state.entries = raw ? JSON.parse(raw) : initialEntries();
+          } catch (fallbackError) { state.entries = initialEntries(); }
         }
+        if (cloudConfigured()) state.entries = state.entries.filter(function (entry) { return !isDemoEntry(entry); });
       }
+      /* 配好云端之后就从空白开始，示例记录只在还没接云端的本地预览里出现 */
+      function initialEntries() { return cloudConfigured() ? [] : seededEntries(); }
       function saveExplorations() { localStorage.setItem(EXPLORE_KEY, JSON.stringify(state.explorations)); schedulePush(); }
       /* ---------- 云端同步：把下面两行填成自己的 Supabase 项目信息即可开启 ---------- */
       var CLOUD_CONFIG = {
@@ -655,7 +665,7 @@
         cloud.pushing = true;
         setSyncState("syncing");
         try {
-          var rows = state.entries.filter(function (entry) { return !entry.seed; }).map(entryToRow);
+          var rows = state.entries.filter(function (entry) { return !entry.seed && !isDemoEntry(entry); }).map(entryToRow);
           await pushTable("entries", rows, cloud.snapshot.entries);
           await pushTable("explorations", state.explorations.map(explorationToRow), cloud.snapshot.explorations);
           cloud.dirty = false;
@@ -683,6 +693,7 @@
       function applyEntryRow(eventType, incoming, oldRow) {
         var row = eventType === "DELETE" ? oldRow : incoming;
         if (!row || !row.id) return;
+        if (eventType !== "DELETE" && isDemoEntry(rowToEntry(row))) return;
         var id = row.id;
         if (eventType === "DELETE") {
           if (Object.prototype.hasOwnProperty.call(cloud.snapshot.entries, id)) delete cloud.snapshot.entries[id];
@@ -738,9 +749,11 @@
       }
       function mergeCloudData(entryRows, explorationRows) {
         var entryMap = {};
-        state.entries.forEach(function (entry) { if (!entry.seed) entryMap[entry.id] = entry; });
+        state.entries.forEach(function (entry) { if (!entry.seed && !isDemoEntry(entry)) entryMap[entry.id] = entry; });
         entryRows.forEach(function (row) {
-          var remote = rowToEntry(row), local = entryMap[remote.id];
+          var remote = rowToEntry(row);
+          if (isDemoEntry(remote)) return;
+          var local = entryMap[remote.id];
           entryMap[remote.id] = local && (local.updatedAt || 0) > remote.updatedAt ? local : remote;
         });
         state.entries = Object.keys(entryMap).map(function (id) { return entryMap[id]; });
