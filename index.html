@@ -179,12 +179,11 @@
     .explore-backdrop.show { opacity: 1; pointer-events: auto; }
     .explore-modal { position: fixed; z-index: 16; left: 50%; top: 50%; width: min(460px, calc(100vw - 32px)); transform: translate(-50%, -46%) scale(.97); opacity: 0; visibility: hidden; pointer-events: none; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); transition: .25s ease; }
     .explore-modal.show { opacity: 1; visibility: visible; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
-    .explore-modal-head { padding: 22px 23px 17px; border-bottom: 1px solid var(--line); display: flex; align-items: flex-start; justify-content: space-between; }
-    .explore-modal h2 { margin: 0; font-family: "YouYuan", "幼圆", sans-serif; font-size: 22px; font-weight: 500; }
+    .explore-modal-head { padding: 14px 14px 8px; display: flex; align-items: center; justify-content: flex-end; }
     .explore-modal form { padding: 21px 23px 22px; }
     .explore-input { display: block; width: 100%; min-height: 116px; resize: vertical; border: 1px solid var(--line); border-radius: 10px; outline: none; color: var(--ink); background: var(--paper-2); padding: 11px 12px; font-size: 13px; line-height: 1.75; }
     .explore-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-wash); }
-    .explore-modal-foot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 14px; }
+    .explore-modal-foot { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: 14px; }
     .drawer-backdrop { position: fixed; inset: 0; z-index: 10; background: rgba(32, 28, 22, .27); opacity: 0; pointer-events: none; transition: opacity .25s ease; }
     .drawer-backdrop.show { opacity: 1; pointer-events: auto; }
     .drawer {
@@ -245,7 +244,7 @@
     .form-row.three { grid-template-columns: 1fr 1fr 1.35fr; }
     .content-group { flex: 1; min-height: 172px; margin-bottom: 0; display: flex; flex-direction: column; }
     .content-group .form-textarea { flex: 1; min-height: 0; resize: none; }
-    .form-hint { color: var(--ink-faint); font-size: 10px; margin-top: 7px; display: flex; justify-content: space-between; }
+    .form-hint { color: var(--ink-faint); font-size: 10px; margin-top: 7px; display: flex; justify-content: flex-end; }
     .text-button { border: 0; background: transparent; color: var(--ink-faint); padding: 8px 0; font-size: 11px; }
     .text-button:hover { color: var(--accent); }
     .save-button { border: 0; background: var(--accent); color: #fff; border-radius: 9px; padding: 10px 21px; font-size: 12px; font-weight: 600; }
@@ -384,15 +383,14 @@
   </div>
 
   <div class="explore-backdrop" id="exploreBackdrop"></div>
-  <section class="explore-modal" id="exploreModal" aria-label="编辑再想想">
+  <section class="explore-modal" id="exploreModal" aria-label="再想想">
     <div class="explore-modal-head">
-      <h2 id="exploreModalTitle">添加再想想</h2>
       <button class="drawer-close" id="exploreClose" aria-label="关闭">×</button>
     </div>
     <form id="exploreForm">
       <label class="form-label" for="exploreInput">想研究、思考或继续追踪的事</label>
       <textarea class="explore-input" id="exploreInput" maxlength="240" placeholder="例如：找时间了解一下……" required></textarea>
-      <div class="explore-modal-foot"><span class="form-hint">写成一句短句，随时回来接着想</span><button class="save-button" type="submit">保存</button></div>
+      <div class="explore-modal-foot"><button class="save-button" type="submit">保存</button></div>
     </form>
   </section>
 
@@ -424,7 +422,7 @@
     <form id="entryForm">
       <div class="editor-body">
         <div class="editor-title-row">
-          <input class="form-input title-input" id="titleInput" maxlength="80" placeholder="给这一刻一个名字" aria-label="标题" required>
+          <input class="form-input title-input" id="titleInput" maxlength="80" aria-label="标题" required>
           <button type="button" class="drawer-close" id="editorClose" aria-label="关闭">×</button>
         </div>
         <div class="form-row three">
@@ -443,8 +441,8 @@
         </div>
         <div class="form-group content-group">
           <label class="form-label" for="contentInput">记录内容</label>
-          <textarea class="form-textarea" id="contentInput" maxlength="5000" placeholder="写下当时想到的、感受到的，或还没想明白的事……" required></textarea>
-          <div class="form-hint"><span>不必完整，留下线索就好</span><span id="charCount">0 / 5000</span></div>
+          <textarea class="form-textarea" id="contentInput" maxlength="5000" required></textarea>
+          <div class="form-hint"><span id="charCount">0 / 5000</span></div>
         </div>
       </div>
       <div class="editor-foot">
@@ -495,6 +493,7 @@
       var DB_STORE = "entries";
       var noteDb = null;
       var THEME_KEY = "shiguang_theme_v1";
+      var OWNER_KEY = "shiguang_cache_owner_v1";
       var categories = {
         reading: { name: "阅读", color: "var(--cat-reading)" },
         life: { name: "生活", color: "var(--cat-life)" },
@@ -617,16 +616,33 @@
         url: "https://aukvrieekuvxawpwaibf.supabase.co",
         anonKey: "sb_publishable_tGIPaegysaRJomFrkYcM3w_hJONha3P"
       };
-      var cloud = { client: null, user: null, activeUserId: null, status: "idle", snapshot: { entries: {}, explorations: {} }, channel: null, pushing: false, dirty: false, timer: null };
+      var cloud = { client: null, user: null, activeUserId: null, status: "idle", snapshot: { entries: {}, explorations: {} }, channel: null, pushing: false, dirty: false, timer: null, sessionRun: 0, pushRun: 0 };
+      function rememberCacheOwner(userId) {
+        if (!userId) return;
+        try { localStorage.setItem(OWNER_KEY, userId); } catch (e) { }
+      }
+      function cacheOwner() {
+        try { return localStorage.getItem(OWNER_KEY); } catch (e) { return null; }
+      }
+      async function prepareCacheForUser(userId) {
+        var owner = cacheOwner();
+        if (!owner || !userId || owner === userId) return false;
+        state.entries = [];
+        state.explorations = [];
+        await persistEntries();
+        try { localStorage.setItem(EXPLORE_KEY, JSON.stringify([])); } catch (e) { }
+        render();
+        return true;
+      }
       function cloudConfigured() { return !!(CLOUD_CONFIG.url && CLOUD_CONFIG.anonKey); }
       function cloudActive() { return cloudConfigured() && !!cloud.user; }
-      function entryToRow(entry) {
-        return { id: entry.id, user_id: cloud.user.id, title: entry.title || "", category: entry.category || "life", entry_date: entry.date || "", content: entry.content || "", tags: entry.tags || [], favorite: !!entry.favorite, updated_at: Number(entry.updatedAt || Date.now()) };
+      function entryToRow(entry, userId) {
+        return { id: entry.id, user_id: userId || cloud.user.id, title: entry.title || "", category: entry.category || "life", entry_date: entry.date || "", content: entry.content || "", tags: entry.tags || [], favorite: !!entry.favorite, updated_at: Number(entry.updatedAt || Date.now()) };
       }
       function rowToEntry(row) {
         return { id: row.id, title: row.title || "", category: row.category || "life", date: String(row.entry_date || "").slice(0, 10), content: row.content || "", tags: Array.isArray(row.tags) ? row.tags : [], favorite: !!row.favorite, updatedAt: Number(row.updated_at) || Date.now() };
       }
-      function explorationToRow(item) { return { id: item.id, user_id: cloud.user.id, text: item.text || "", updated_at: Number(item.updatedAt || Date.now()) }; }
+      function explorationToRow(item, userId) { return { id: item.id, user_id: userId || cloud.user.id, text: item.text || "", updated_at: Number(item.updatedAt || Date.now()) }; }
       function rowToExploration(row) { return { id: row.id, text: row.text || "", updatedAt: Number(row.updated_at) || Date.now() }; }
       function updateAccountUI() {
         if (!els.accountBtn) return;
@@ -663,20 +679,26 @@
       async function flushToCloud() {
         if (!cloudActive() || cloud.pushing) return;
         cloud.pushing = true;
+        var userId = cloud.user.id, run = ++cloud.pushRun;
         setSyncState("syncing");
         try {
-          var rows = state.entries.filter(function (entry) { return !entry.seed && !isDemoEntry(entry); }).map(entryToRow);
+          var rows = state.entries.filter(function (entry) { return !entry.seed && !isDemoEntry(entry); }).map(function (entry) { return entryToRow(entry, userId); });
           await pushTable("entries", rows, cloud.snapshot.entries);
-          await pushTable("explorations", state.explorations.map(explorationToRow), cloud.snapshot.explorations);
+          if (run !== cloud.pushRun || !cloud.user || cloud.user.id !== userId) return;
+          await pushTable("explorations", state.explorations.map(function (item) { return explorationToRow(item, userId); }), cloud.snapshot.explorations);
+          if (run !== cloud.pushRun || !cloud.user || cloud.user.id !== userId) return;
           cloud.dirty = false;
           setSyncState("ok");
         } catch (err) {
+          if (run !== cloud.pushRun || !cloud.user || cloud.user.id !== userId) return;
           setSyncState("error");
           if (cloud.timer) clearTimeout(cloud.timer);
           cloud.timer = setTimeout(function () { cloud.timer = null; flushToCloud(); }, 5000);
         } finally {
-          cloud.pushing = false;
-          if (cloud.dirty && cloud.status === "ok") schedulePush();
+          if (run === cloud.pushRun) {
+            cloud.pushing = false;
+            if (cloud.dirty && cloud.status === "ok") schedulePush();
+          }
         }
       }
       function subscribeRealtime() {
@@ -767,13 +789,18 @@
       }
       async function startCloudSession() {
         if (!cloudActive()) return;
+        var sessionUserId = cloud.user.id, sessionRun = ++cloud.sessionRun;
         setSyncState("syncing");
         try {
           var entryRes = await cloud.client.from("entries").select("id,user_id,title,category,entry_date,content,tags,favorite,updated_at");
+          if (sessionRun !== cloud.sessionRun || !cloud.user || cloud.user.id !== sessionUserId) return;
           if (entryRes.error) throw entryRes.error;
           var exploreRes = await cloud.client.from("explorations").select("id,user_id,text,updated_at");
+          if (sessionRun !== cloud.sessionRun || !cloud.user || cloud.user.id !== sessionUserId) return;
           if (exploreRes.error) throw exploreRes.error;
           var entryRows = entryRes.data || [], explorationRows = exploreRes.data || [];
+          /* 本机缓存若属于另一个账号，就不再合并上传，直接换成当前账号的云端内容 */
+          var switchedAccount = await prepareCacheForUser(cloud.user.id);
           cloud.snapshot.entries = {};
           cloud.snapshot.explorations = {};
           entryRows.forEach(function (row) { cloud.snapshot.entries[row.id] = Number(row.updated_at) || 0; });
@@ -782,20 +809,26 @@
           var pendingUpload = state.entries.filter(function (entry) { return !entry.seed && !Object.prototype.hasOwnProperty.call(cloud.snapshot.entries, entry.id); }).length;
           await persistEntries();
           localStorage.setItem(EXPLORE_KEY, JSON.stringify(state.explorations));
+          rememberCacheOwner(sessionUserId);
           render();
           subscribeRealtime();
-          if (pendingUpload) showToast("已把本机的 " + pendingUpload + " 条记录上传到云端");
+          if (switchedAccount) showToast("这是另一个账号，本机缓存的记录没有上传");
+          else if (pendingUpload) showToast("已把本机的 " + pendingUpload + " 条记录上传到云端");
           flushToCloud();
         } catch (err) {
+          if (sessionRun !== cloud.sessionRun || !cloud.user || cloud.user.id !== sessionUserId) return;
           setSyncState("error");
           showToast("云端读取失败，先看本机记录");
         }
       }
       function stopCloudSession() {
+        cloud.sessionRun++;
+        cloud.pushRun++;
         if (cloud.channel && cloud.client) { try { cloud.client.removeChannel(cloud.channel); } catch (e) { } }
         cloud.channel = null;
         cloud.snapshot = { entries: {}, explorations: {} };
         cloud.dirty = false;
+        cloud.pushing = false;
         if (cloud.timer) { clearTimeout(cloud.timer); cloud.timer = null; }
         setSyncState("idle");
       }
@@ -857,7 +890,7 @@
           "accountBtn", "authBackdrop", "authModal", "authClose", "authForm", "authEmail", "authPassword", "authHint", "authSignUp", "authSubmit",
           "todayNumber", "todayLabel", "todayWeekday", "statTotal", "statMonth", "listMeta", "filters",
           "sortSelect", "notesGrid", "crumbText", "explorationList", "addExplorationBtn", "exploreBackdrop", "exploreModal",
-          "exploreClose", "exploreForm", "exploreInput", "exploreModalTitle",
+          "exploreClose", "exploreForm", "exploreInput",
           "drawerBackdrop", "readerDrawer", "readerClose", "readerTitle", "readerCategory", "readerDate", "readerTags",
           "readerContent", "readerEdit", "readerDelete", "readerFavorite",
           "editorBackdrop", "editorModal", "editorClose",
@@ -928,7 +961,6 @@
       function openExploration(id) {
         var item = id ? state.explorations.find(function (entry) { return entry.id === id; }) : null;
         state.editingExplorationId = item ? item.id : null;
-        els.exploreModalTitle.textContent = item ? "编辑再想想" : "添加再想想";
         els.exploreInput.value = item ? item.text : "";
         els.exploreModal.classList.add("show"); els.exploreBackdrop.classList.add("show");
         setTimeout(function () { els.exploreInput.focus(); }, 120);
